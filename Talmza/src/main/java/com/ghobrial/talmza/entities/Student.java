@@ -2,16 +2,30 @@ package com.ghobrial.talmza.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "Student")
+@DynamicInsert
+@DynamicUpdate
+@Data
 public class Student implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,104 +34,35 @@ public class Student implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Basic(optional = false)
 	private String name;
 
+	@Basic(optional = false)
 	private String mobileNumber;
 
 	private String homeNumber;
 
+	@Basic(optional = false)
 	private String address;
 
+	@Temporal(TemporalType.DATE)
+	@Basic(optional = false)
 	private Date birthdate;
 
+	@Basic(optional = false)
 	private String church;
 
+	@Basic(optional = false)
 	private String churchFather;
 
+	@Basic(optional = false)
 	private String classStudy;
 
-	@OneToMany(mappedBy = "student")
-	private Set<StudentSubject> studentSubjects;
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+	private Set<StudentSubject> studentSubjects = new HashSet<>();
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
-
-	public String getHomeNumber() {
-		return homeNumber;
-	}
-
-	public void setHomeNumber(String homeNumber) {
-		this.homeNumber = homeNumber;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Date getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
-
-	public String getChurch() {
-		return church;
-	}
-
-	public void setChurch(String church) {
-		this.church = church;
-	}
-
-	public String getChurchFather() {
-		return churchFather;
-	}
-
-	public void setChurchFather(String churchFather) {
-		this.churchFather = churchFather;
-	}
-
-	public String getClassStudy() {
-		return classStudy;
-	}
-
-	public void setClassStudy(String classStudy) {
-		this.classStudy = classStudy;
-	}
-
-	public Set<StudentSubject> getStudentSubjects() {
-		return studentSubjects;
-	}
-
-	public void setStudentSubjects(Set<StudentSubject> studentSubjects) {
-		this.studentSubjects = studentSubjects;
-	}
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+	private Set<StudentMeeting> studentMeetings = new HashSet<>();
 
 	@Override
 	public int hashCode() {

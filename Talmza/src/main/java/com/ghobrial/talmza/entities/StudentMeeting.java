@@ -1,39 +1,46 @@
 package com.ghobrial.talmza.entities;
 
 import java.io.Serializable;
-
+import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import lombok.Data;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Data
-public class StudentSubject implements Serializable {
+public class StudentMeeting implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@ManyToOne
 	@JoinColumn(name = "StudentId")
+	@ManyToOne
 	private Student student;
 
 	@Id
+	@JoinColumn(name = "MeetingId")
 	@ManyToOne
-	@JoinColumn(name = "SubjectId")
-	private Subject subject;
+	private Meeting meeting;
 
-	private Double mark;
+	@Basic(optional = false)
+	private Date attendenceDate = new Date();
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((mark == null) ? 0 : mark.hashCode());
+		result = prime * result + ((attendenceDate == null) ? 0 : attendenceDate.hashCode());
+		result = prime * result + ((meeting == null) ? 0 : meeting.hashCode());
 		result = prime * result + ((student == null) ? 0 : student.hashCode());
-		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
 		return result;
 	}
 
@@ -45,28 +52,29 @@ public class StudentSubject implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StudentSubject other = (StudentSubject) obj;
-		if (mark == null) {
-			if (other.mark != null)
+		StudentMeeting other = (StudentMeeting) obj;
+		if (attendenceDate == null) {
+			if (other.attendenceDate != null)
 				return false;
-		} else if (!mark.equals(other.mark))
+		} else if (!attendenceDate.equals(other.attendenceDate))
+			return false;
+		if (meeting == null) {
+			if (other.meeting != null)
+				return false;
+		} else if (!meeting.equals(other.meeting))
 			return false;
 		if (student == null) {
 			if (other.student != null)
 				return false;
 		} else if (!student.equals(other.student))
 			return false;
-		if (subject == null) {
-			if (other.subject != null)
-				return false;
-		} else if (!subject.equals(other.subject))
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "StudentSubject [student=" + student + ", subject=" + subject + ", mark=" + mark + "]";
+		return "StudentMeeting [student=" + student + ", meeting=" + meeting + ", attendenceDate=" + attendenceDate
+				+ "]";
 	}
 
 }

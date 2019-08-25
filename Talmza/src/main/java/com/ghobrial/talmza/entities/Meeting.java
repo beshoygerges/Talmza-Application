@@ -2,14 +2,28 @@ package com.ghobrial.talmza.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import lombok.Data;
+
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@Data
 public class Meeting implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,45 +32,19 @@ public class Meeting implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Basic(optional = false)
 	@Temporal(TemporalType.DATE)
-	private Date localDate;
+	private Date localDate = new Date();
 
+	@Basic(optional = false)
 	@Temporal(TemporalType.TIME)
-	private Date localTime;
+	private Date localTime = new Date();
 
+	@Basic(optional = false)
 	private String location;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getLocalDate() {
-		return localDate;
-	}
-
-	public void setLocalDate(Date localDate) {
-		this.localDate = localDate;
-	}
-
-	public Date getLocalTime() {
-		return localTime;
-	}
-
-	public void setLocalTime(Date localTime) {
-		this.localTime = localTime;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
+	@OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+	private Set<StudentMeeting> meetingStudent = new HashSet<>();
 
 	@Override
 	public int hashCode() {

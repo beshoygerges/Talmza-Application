@@ -3,6 +3,7 @@ package com.ghobrial.talmza.entities;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import lombok.Data;
+
 @Entity
 @Table(name = "Subject")
+@DynamicInsert
+@DynamicUpdate
+@Data
 public class Subject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,74 +29,23 @@ public class Subject implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Basic(optional = false)
 	private String name;
 
+	@Basic(optional = false)
 	private int max;
 
+	@Basic(optional = false)
 	private int min;
 
+	@Basic(optional = false)
 	private String teachBy;
 
+	@Basic(optional = false)
 	private String term;
 
 	@OneToMany(mappedBy = "subject")
 	private Set<StudentSubject> studentSubjects;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getMax() {
-		return max;
-	}
-
-	public void setMax(int max) {
-		this.max = max;
-	}
-
-	public int getMin() {
-		return min;
-	}
-
-	public void setMin(int min) {
-		this.min = min;
-	}
-
-	public String getTeachBy() {
-		return teachBy;
-	}
-
-	public void setTeachBy(String teachBy) {
-		this.teachBy = teachBy;
-	}
-
-	public String getTerm() {
-		return term;
-	}
-
-	public void setTerm(String term) {
-		this.term = term;
-	}
-
-	public Set<StudentSubject> getStudentSubjects() {
-		return studentSubjects;
-	}
-
-	public void setStudentSubjects(Set<StudentSubject> studentSubjects) {
-		this.studentSubjects = studentSubjects;
-	}
 
 	@Override
 	public int hashCode() {
